@@ -6,5 +6,10 @@
     "moduleResolution": "Node",
     "esModuleInterop": true,
     "strictNullChecks": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@server/*": ["../server/src/*"]
+    }
   }
 }

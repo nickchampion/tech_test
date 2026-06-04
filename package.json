@@ -1,0 +1,11 @@
+{
+  "name": "tic-tac-toe",
+  "version": "1.0.0",
+  "scripts": {
+    "init": "mkdir -p server/data && npm install --prefix server && npm install --prefix client && npm run db:push",
+    "start": "npm run --prefix server start & npm run --prefix client start",
+    "test": "npm run --prefix client test",
+    "db:push": "npm run --prefix server db:push",
+    "db:reset": "rm -f server/data/app.db && npm run db:push"
+  }
+}

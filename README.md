@@ -1,3 +1,24 @@
+# FAO Nick
+
+Added a root level package.json for convenience, to install packages, initialise the database and run the app, from the root just run these 2 commands
+
+ - npm run init
+ - npm run start
+
+## Approach
+
+I approached this with a strong bias toward simplicity and type safety across the full stack. 
+
+For the API layer I chose tRPC, which gives end-to-end TypeScript inference between the server and client without any separate schema language or code generation step — the router type itself becomes the contract, so a change on the server surfaces immediately as a type error on the client. This felt like the right tool for a TypeScript-first project where schema drift between client and server is a common source of bugs. 
+
+For the database I chose Drizzle ORM with SQLite via better-sqlite3: Drizzle is deliberately lightweight and derives TypeScript types directly from the schema definition, which meant I could avoid writing manual row-mapping code and have the compiler catch column mismatches automatically. The synchronous nature of better-sqlite3 also kept the server code straightforward — no async/await chains for database calls. 
+
+The broader architectural decision was to keep game logic entirely on the client and only use the server for persistence: the client maintains game state in React, runs the win-condition algorithm locally, and calls the server twice per game — once to resolve player identities on start, once to persist the result on completion. This kept the API surface minimal, avoided unnecessary round-trips during gameplay, and meant the server has no opinion about game rules.
+
+The game board is stored as a flat single-dimension array rather than a 2D array. Any cell is addressed with `row * boardSize + col`.
+
+Error handling has not been implemented. In a production application I would likely use `@trpc/react-query`, which exposes `isError`, `error`, and `isPending` states directly on mutations and queries — making it straightforward to surface server or transport failures to the user without manual `try/catch` wiring around every call.
+
 
 # Tic-Tac-Toe
 The below problems are to allow us a glimpse into your problem solving ability, style and current skill set. Vibe coding is allowed but we are looking for good taste, brevity and clarity in your code. 
